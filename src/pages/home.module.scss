@@ -7,6 +7,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    img {
+        animation: upDown 1s infinite alternate;
+    }
+}
+
+.hand{
+    display: inline-block;
+    animation: rotate 0.75s infinite alternate;
 }
 
 .hero {
@@ -41,5 +50,23 @@
 
     button {
         margin-top: 2.5rem;
+    }
+}
+
+@keyframes upDown {
+    from{
+        margin-top: -15px;
+    }
+    to {
+        margin-top: 15px;
+    }
+}
+
+@keyframes rotate {
+    from{
+        transform: rotate(-15deg);
+    }
+    to {
+        transform: rotate(15deg);
     }
 }
