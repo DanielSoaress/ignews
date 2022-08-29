@@ -1,6 +1,6 @@
 .headerContainer {
     height: 5rem;
-    border-bottom: 1px solid var(--gray-800);
+    border-bottom: 1px solid var(--pink-800);
 }
 
 .headerContent {
@@ -12,6 +12,14 @@
     display: flex;
     align-items: center;
 
+    img {
+        cursor: pointer;
+        transition: 1s;
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
     nav {
         margin-left: 5rem;
         height: 5rem;
@@ -22,7 +30,7 @@
             padding: 0 0.5rem;
             height: 5rem;
             line-height: 5rem;
-            color: var(--gray-300);
+            color: var(--white);
             transition: color 0.2s;
 
             & + a {

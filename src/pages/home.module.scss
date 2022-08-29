@@ -1,12 +1,21 @@
 .contentContainer {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2rem 2.5rem 2rem;
     height: calc(100vh - 5rem);
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    img {
+        animation: upDown 1s infinite alternate;
+    }
+}
+
+.hand{
+    display: inline-block;
+    animation: rotate 0.75s infinite alternate;
 }
 
 .hero {
@@ -24,7 +33,7 @@
         margin-top: 2.5rem;
 
         span {
-            color: var(--cyan-500);
+            color: var(--yellow);
         }
     }
 
@@ -34,12 +43,30 @@
         margin-top: 1.5rem;
 
         span {
-            color: var(--cyan-500);
+            color: var(--yellow);
             font-weight: bold;
         }
     }
 
     button {
         margin-top: 2.5rem;
+    }
+}
+
+@keyframes upDown {
+    from{
+        margin-top: -15px;
+    }
+    to {
+        margin-top: 15px;
+    }
+}
+
+@keyframes rotate {
+    from{
+        transform: rotate(-15deg);
+    }
+    to {
+        transform: rotate(15deg);
     }
 }
