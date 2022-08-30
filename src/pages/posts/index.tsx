@@ -10,6 +10,7 @@ type Post = {
     slug: string;
     title: string;
     excerpt: string;
+    image: string;
     updatedAt: string;
 }
 interface PostsProps {
@@ -26,15 +27,18 @@ export default function Posts({ posts }: PostsProps) {
                 <div className={styles.posts}>
                     {
                         posts.map(post => (
-                            <Link href={`/posts/${post.slug}`} key={post.slug}>
-                                <a>
-                                    <time>{post.updatedAt}</time>
-                                    <strong>{post.title}</strong>
-                                    <p>
-                                        {post.excerpt}
-                                    </p>
-                                </a>
-                            </Link>
+                            <div className={styles.postContainer}>
+                                <img src={post.image} alt={post.image} />
+                                <Link href={`/posts/${post.slug}`} key={post.slug}>
+                                        <a>
+                                            <time>{post.updatedAt}</time>
+                                            <strong>{post.title}</strong>
+                                            <p>
+                                                {post.excerpt}
+                                            </p>
+                                        </a>
+                                </Link>
+                            </div>
                         ))
                     }
                 </div>
@@ -49,16 +53,22 @@ export const getStaticProps: GetStaticProps = async () => {
     const response = await prismic.query<any>(
         [Prismic.predicates.at('document.type', 'template-post')],
         {
-            fetch: ['template-post.title', 'template-post.content'],
+            fetch: ['template-post.title', 'template-post.content', 'template-post.image'],
             pageSize: 10,
         }
     )
 
+    let countPost = 0;
     const posts = response.results.map(post => {
+        countPost++;
+        const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
+        const isMultipleFour = countPost%4 === 0;
+        const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
         return {
             slug: post.uid,
             title: RichText.asText(post.data.title),
-            excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
+            excerpt: excerpt.length > 200 ? `${previewText}...` : '',
+            image: post.data.image.url ?? '',
             updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
                 {
                     day: '2-digit',

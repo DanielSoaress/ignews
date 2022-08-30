@@ -15,6 +15,7 @@
 
     --cyan-500: #61dafb;
     --yellow-500: #eba417;
+    --yellow-opacity: #ebc40094;
 
     --pink-800: #B94899;
     --pink: rgba(163, 11, 102, 1);
@@ -43,7 +44,7 @@ body {
         content: '';
         height: 100%;
         width: 100%;
-        position: absolute;
+        position: fixed;
         bottom: 0px;
         left: 0;
         filter: opacity(0.2);   
@@ -56,7 +57,7 @@ body {
         content: '';
         height: 100%;
         width: 100%;
-        position: absolute;
+        position: fixed;
         bottom: 0px;
         left: 0;
         filter: opacity(0.1);   

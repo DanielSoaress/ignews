@@ -11,6 +11,7 @@ interface PostProps {
         slug: string;
         title: string;
         content: string;
+        image: string;
         updatedAt: string;
     }
 }
@@ -26,6 +27,7 @@ export default function Post ({ post }: PostProps) {
                 <article className={styles.post}>
                     <h1>{post.title}</h1>
                     <time>{post.updatedAt}</time>
+                    <img src={post.image} alt="turururu" />
                     <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.content }} />
                 </article>
             </main>
@@ -44,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, params }) => 
         slug,
         title: RichText.asText(response.data.title),
         content: RichText.asHtml(response.data.content),
+        image: response.data.image.url ?? '',
         updatedAt: new Date(response.last_publication_date).toLocaleDateString('pt-BR',
         {
             day: '2-digit',
