@@ -10,6 +10,9 @@
     flex-direction: row;
     align-items: start;
 
+    margin-top: 1rem;
+    padding-top: 1rem;
+
     a {
         padding-right: 0rem;
         padding-left: 1rem;
@@ -29,8 +32,24 @@
         }
     }
 
-    margin-top: 1rem;
-    padding-top: 1rem;
+    &:nth-child(4n) {
+        border-top: 1px solid var(--yellow-opacity);
+        border-bottom: 1px solid var(--yellow-opacity);
+        flex-direction: column;
+
+        padding-bottom: 1rem;
+        margin-top: 2rem;
+        
+        a, img {
+            width: 100%;
+            padding: 0;
+        }
+
+        a {
+            margin-top: 2rem;
+            text-align: justify;
+        }
+    }
 
     img {
         display: block;

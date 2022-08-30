@@ -34,7 +34,7 @@ export default function Posts({ posts }: PostsProps) {
                                             <time>{post.updatedAt}</time>
                                             <strong>{post.title}</strong>
                                             <p>
-                                                {post.excerpt.slice(0, 200)}{post.excerpt.length > 200 ? '...' : ''}
+                                                {post.excerpt}
                                             </p>
                                         </a>
                                 </Link>
@@ -58,11 +58,16 @@ export const getStaticProps: GetStaticProps = async () => {
         }
     )
 
+    let countPost = 0;
     const posts = response.results.map(post => {
+        countPost++;
+        const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
+        const isMultipleFour = countPost%4 === 0;
+        const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
         return {
             slug: post.uid,
             title: RichText.asText(post.data.title),
-            excerpt: post.data.content.find(content => content.type === 'paragraph')?.text ?? '',
+            excerpt: excerpt.length > 200 ? `${previewText}...` : '',
             image: post.data.image.url ?? '',
             updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
                 {
