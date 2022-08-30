@@ -10,6 +10,13 @@
     padding-top: 5rem;
     margin: 0rem auto 0;
 
+    img {
+        object-fit: cover;
+        width: 100%;
+        height: 15vh;
+        margin-top: 2rem;
+    }
+
     h1 {
         font-size: 3.0rem;
         font-weight: 900;
