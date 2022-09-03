@@ -72,8 +72,8 @@ export default function Posts({ allPosts }: PostsProps) {
                         dataLength={posts.length}
                         next={getMorePost}
                         hasMore={hasMore}
-                        loader={<h3> Loading...</h3>}
-                        endMessage={<h4>Nothing more to show</h4>}
+                        loader={<div className={styles.loadingContainer}><div className={styles.ldsRing}><div></div><div></div><div></div><div></div></div></div>}
+                        endMessage={<div className={styles.loadingContainer}><div className={styles.ldsEllipsis}><div></div><div></div><div></div><div></div></div></div>}
                     >
                         {
                             posts.map(post => (
