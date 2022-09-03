@@ -1,10 +1,13 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { getPrismicClient } from '../../services/prismic';
+import { getPrismicClient, listPostPrismic } from '../../services/prismic';
+
 import styles from './styles.module.scss';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
 import Link from 'next/link';
+import { useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 type Post = {
     slug: string;
@@ -14,10 +17,50 @@ type Post = {
     updatedAt: string;
 }
 interface PostsProps {
-    posts: Post[]
+    allPosts: Post[];
 }
 
-export default function Posts({ posts }: PostsProps) {
+export default function Posts({ allPosts }: PostsProps) {
+    const [currentPage, setCurrentPage] = useState(2);
+    const [posts, setPosts] = useState(allPosts);
+    const [hasMore, setHasMore] = useState(true);
+
+    const getMorePost = async () => {
+        const params = {
+            currentPage,
+            pageSize: 4,
+            fetch: 'template-post.title,template-post.content,template-post.image',
+            q: '[at(document.type,"template-post")]'
+        }
+        const response = await listPostPrismic(params);
+        
+        let countPost = 0;
+        const postsResponse = response.results?.map(post => {
+            countPost++;
+            const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
+            const isMultipleFour = countPost % 4 === 0;
+            const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
+            return {
+                slug: post.uid,
+                title: RichText.asText(post.data.title),
+                excerpt: excerpt.length > 200 ? `${previewText}...` : '',
+                image: post.data.image.url ?? '',
+                updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
+                    {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric'
+                    })
+            }
+        })
+        if(!response.results_size){
+            setHasMore(false);
+        } else {
+            setCurrentPage(currentPage + 1);
+            setPosts([...posts, ...postsResponse]);
+        }
+    };
+
     return (
         <>
             <Head>
@@ -25,11 +68,18 @@ export default function Posts({ posts }: PostsProps) {
             </Head>
             <main className={styles.container}>
                 <div className={styles.posts}>
-                    {
-                        posts.map(post => (
-                            <div key={post.slug} className={styles.postContainer}>
-                                <img src={post.image} alt={post.image}/>
-                                <Link href={`/posts/${post.slug}`} key={post.slug}>
+                    <InfiniteScroll
+                        dataLength={posts.length}
+                        next={getMorePost}
+                        hasMore={hasMore}
+                        loader={<h3> Loading...</h3>}
+                        endMessage={<h4>Nothing more to show</h4>}
+                    >
+                        {
+                            posts.map(post => (
+                                <div key={post.slug} className={styles.postContainer}>
+                                    <img src={post.image} alt={post.image} />
+                                    <Link href={`/posts/${post.slug}`} key={post.slug}>
                                         <a>
                                             <time>{post.updatedAt}</time>
                                             <strong>{post.title}</strong>
@@ -37,15 +87,17 @@ export default function Posts({ posts }: PostsProps) {
                                                 {post.excerpt}
                                             </p>
                                         </a>
-                                </Link>
-                            </div>
-                        ))
-                    }
+                                    </Link>
+                                </div>
+                            ))
+                        }
+                    </InfiniteScroll>
                 </div>
             </main>
         </>
     );
 }
+
 
 export const getStaticProps: GetStaticProps = async () => {
     const prismic = getPrismicClient();
@@ -54,15 +106,16 @@ export const getStaticProps: GetStaticProps = async () => {
         [Prismic.predicates.at('document.type', 'template-post')],
         {
             fetch: ['template-post.title', 'template-post.content', 'template-post.image'],
-            pageSize: 10,
+            pageSize: 4,
+            page: 1,
         }
     )
 
     let countPost = 0;
-    const posts = response.results.map(post => {
+    const allPosts = response.results.map(post => {
         countPost++;
         const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
-        const isMultipleFour = countPost%4 === 0;
+        const isMultipleFour = countPost % 4 === 0;
         const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
         return {
             slug: post.uid,
@@ -80,7 +133,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
         props: {
-            posts
+            allPosts
         }
     }
 }
