@@ -77,7 +77,7 @@ export default function Posts({ allPosts }: PostsProps) {
 
         const response = await listPostPrismic(params);
         const postsResponse = handlerPosts(response.results);
-       
+
         setHasMore(!!response.results_size);
         setSearch(searchText);
         setCurrentPage(2);
@@ -95,29 +95,38 @@ export default function Posts({ allPosts }: PostsProps) {
                     <Search
                         handleSearch={searchPosts}
                     />
-                    <InfiniteScroll
-                        dataLength={posts.length}
-                        next={getMorePost}
-                        hasMore={hasMore}
-                        loader={<div className={styles.loadingContainer}><div className={styles.ldsEllipsis}><div></div><div></div><div></div><div></div></div></div>}
-                    >
-                        {
-                            posts.map(post => (
-                                <div key={post.slug} className={styles.postContainer}>
-                                    <img src={post.image} alt={post.image} />
-                                    <Link href={`/posts/${post.slug}`} key={post.slug}>
-                                        <a>
-                                            <time>{post.updatedAt}</time>
-                                            <strong>{post.title}</strong>
-                                            <p>
-                                                {post.excerpt}
-                                            </p>
-                                        </a>
-                                    </Link>
-                                </div>
-                            ))
-                        }
-                    </InfiniteScroll>
+                    {!loadingSearch ?
+                        <InfiniteScroll
+                            dataLength={posts.length}
+                            next={getMorePost}
+                            hasMore={hasMore}
+                            loader={<div className={styles.loadingContainer}><div className={styles.ldsEllipsis}><div></div><div></div><div></div><div></div></div></div>}
+                        >
+                            {
+                                posts.map(post => (
+                                    <div key={post.slug} className={styles.postContainer}>
+                                        <img src={post.image} alt={post.image} />
+                                        <Link href={`/posts/${post.slug}`} key={post.slug}>
+                                            <a>
+                                                <time>{post.updatedAt}</time>
+                                                <strong>{post.title}</strong>
+                                                <p>
+                                                    {post.excerpt}
+                                                </p>
+                                            </a>
+                                        </Link>
+                                    </div>
+                                ))
+                            }
+                        </InfiniteScroll>
+                        :
+                        <div className={styles.loadingContainer}>
+                            <div className={styles.ldsEllipsis}>
+                                <div></div><div></div><div></div><div></div>
+                            </div>
+                        </div>
+                    }
+
                 </div>
             </main>
         </>
@@ -133,7 +142,7 @@ export const getStaticProps: GetStaticProps = async () => {
             fetch: ['template-post.title', 'template-post.content', 'template-post.image'],
             pageSize: 4,
             page: 1,
-            orderings : '[document.first_publication_date desc]'
+            orderings: '[document.first_publication_date desc]'
         },
     )
 
