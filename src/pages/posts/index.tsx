@@ -85,6 +85,19 @@ export default function Posts({ allPosts }: PostsProps) {
         setLoadingSearch(false);
     }
 
+    const renderNotData = () => {
+        if (!loadingSearch && !posts.length && !hasMore) {
+            return (
+                <>
+                    <div className={styles.notData}>
+                        <img src="/images/icons/search.svg" alt="search" />
+                        <p >Sua pesquisa não encontrou nenhum documento correspondente.</p>
+                    </div>
+                </>
+            )
+        }
+    }
+
     return (
         <>
             <Head>
@@ -125,6 +138,10 @@ export default function Posts({ allPosts }: PostsProps) {
                                 <div></div><div></div><div></div><div></div>
                             </div>
                         </div>
+                    }
+
+                    {
+                        renderNotData()
                     }
 
                 </div>

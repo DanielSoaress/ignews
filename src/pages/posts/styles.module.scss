@@ -5,6 +5,29 @@
     min-height: calc(100vh - 6.5rem);
 }
 
+.notData {
+
+    padding-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-top: 3rem;
+
+    p {
+        font-size: 26px;
+        line-height: 28px;
+    }
+
+    img {
+        height: 65px;
+        width: 65px;
+        display: inline-flex;
+        margin-right: 1rem;
+    }
+}
+
 .postContainer {
     display: flex;
     flex-direction: row;
