@@ -23,6 +23,10 @@
     --yellow: #ebc400;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 @media (max-width: 1080px) {
     html {
         font-size: 93.75%;
@@ -47,7 +51,7 @@ body {
         position: fixed;
         bottom: 0px;
         left: 0;
-        filter: opacity(0.2);   
+        filter: opacity(0.2);
         background-image: url("../../public/images/background-line.svg");
         background-repeat: repeat;
         z-index: -1;
@@ -60,7 +64,7 @@ body {
         position: fixed;
         bottom: 0px;
         left: 0;
-        filter: opacity(0.1);   
+        filter: opacity(0.1);
         background-image: url("../../public/images/background-pixel.svg");
         background-repeat: repeat;
         z-index: -1;
