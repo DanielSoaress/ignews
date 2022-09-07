@@ -2,6 +2,7 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { getPrismicClient, listPostPrismic } from '../../services/prismic';
 import { Search } from '../../components/Search';
+import { ButtonScrollTop } from '../../components/ButtonScrollTop';
 import styles from './styles.module.scss';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
@@ -104,6 +105,8 @@ export default function Posts({ allPosts }: PostsProps) {
                 <title>Posts | lostCode</title>
             </Head>
             <main className={styles.container}>
+                <ButtonScrollTop
+                    show={posts.length > 4}/>
                 <div className={styles.posts}>
                     <Search
                         handleSearch={searchPosts}
