@@ -12,6 +12,12 @@ export function Search(props: SearchProps) {
         setSearch(event.target.value);
     }
 
+    const handleKeyDown = (event) => {
+        if(event.key === 'Enter') {
+            handleSearch();
+        }
+    }
+
     const handleSearch = () => {
         props.handleSearch(search);
     }
@@ -25,6 +31,7 @@ export function Search(props: SearchProps) {
                 onChange={handleChange}
                 placeholder="Procurar..."
                 aria-label="Procurar artigo"
+                onKeyDown={handleKeyDown}
              />
             <button type="button" onClick={handleSearch}>
                 <img src="/images/icons/search.svg" alt="search" />
