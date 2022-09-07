@@ -39,12 +39,13 @@ export async function listPostPrismic(data?: Params) {
         const fetchParams = encodeURIComponent(`fetch=[${data.fetch}]`);
         const pageSize = `pageSize=${data.pageSize}`;
         const page = `page=${data.currentPage}`;
+        const order = `orderings=${encodeURIComponent('[document.first_publication_date desc]')}`;
 
         const resp = await getRef();
         if(!resp) return false;
         const ref = encodeURIComponent(resp);
 
-        const url = `${PRISMIC_END_PONT}/documents/search?ref=${ref}&access_token=${ACCESS_TOKEN}&${q}&${fetchParams}&${pageSize}&${page}`;
+        const url = `${PRISMIC_END_PONT}/documents/search?ref=${ref}&access_token=${ACCESS_TOKEN}&${q}&${fetchParams}&${pageSize}&${page}&${order}`;
     
         const response = await fetch(url).then((response) => response.json());
         return response;

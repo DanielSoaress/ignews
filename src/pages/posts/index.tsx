@@ -78,8 +78,7 @@ export default function Posts({ allPosts }: PostsProps) {
         const response = await listPostPrismic(params);
         const postsResponse = handlerPosts(response.results);
        
-        (!response.results_size) ? setHasMore(false) :setHasMore(true);
-       
+        setHasMore(!!response.results_size);
         setSearch(searchText);
         setCurrentPage(2);
         setPosts([...postsResponse]);
@@ -135,7 +134,8 @@ export const getStaticProps: GetStaticProps = async () => {
             fetch: ['template-post.title', 'template-post.content', 'template-post.image'],
             pageSize: 4,
             page: 1,
-        }
+            orderings : '[document.first_publication_date desc]'
+        },
     )
 
     let countPost = 0;
