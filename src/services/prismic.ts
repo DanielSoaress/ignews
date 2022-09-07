@@ -35,7 +35,7 @@ async function getRef() {
 
 export async function listPostPrismic(data?: Params) {
     try {
-        const q = encodeURIComponent(`q=[${data.q}]`);
+        const q = "q=" + encodeURIComponent(`[${data.q}]`);
         const fetchParams = encodeURIComponent(`fetch=[${data.fetch}]`);
         const pageSize = `pageSize=${data.pageSize}`;
         const page = `page=${data.currentPage}`;
@@ -45,6 +45,7 @@ export async function listPostPrismic(data?: Params) {
         const ref = encodeURIComponent(resp);
 
         const url = `${PRISMIC_END_PONT}/documents/search?ref=${ref}&access_token=${ACCESS_TOKEN}&${q}&${fetchParams}&${pageSize}&${page}`;
+    
         const response = await fetch(url).then((response) => response.json());
         return response;
     } catch (error) {
