@@ -18,6 +18,7 @@ type Post = {
     excerpt: string;
     tag: string;
     image: string;
+    timeOfRead: string;
     updatedAt: string;
 }
 
@@ -26,7 +27,7 @@ interface PostsProps {
 }
 
 const pageSize = 4;
-const fetch = 'template-post.title,template-post.content,template-post.image,template-post.tag';
+const fetch = 'template-post.title,template-post.content,template-post.image,template-post.tags';
 const q = '[at(document.type,"template-post")]';
 
 const handlerPosts = (posts) => {
@@ -35,6 +36,7 @@ const handlerPosts = (posts) => {
         countPost++;
         const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
         const isMultipleFour = countPost % 4 === 0;
+        const timeOfRead = calcTimeOfRead(post)
         const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
         return {
             slug: post.uid,
@@ -42,14 +44,26 @@ const handlerPosts = (posts) => {
             excerpt: excerpt.length > 200 ? `${previewText}...` : '',
             image: post.data.image.url ?? '',
             tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
+            timeOfRead,
             updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
                 {
                     day: '2-digit',
-                    month: 'long',
+                    month: '2-digit',
                     year: 'numeric'
                 })
         }
     })
+}
+
+const calcTimeOfRead = (post) => {
+    const num_words = RichText.asText(post.data.content)?.split(' ').length;
+    const num_imgs = 1;
+    let height_imgs = 0;
+    for(let i = 0; i < num_imgs; i++) {
+        height_imgs += (i <= 9) ? 12 - i : 3;
+    }
+    const seconds = (num_words / 265 * 60) + height_imgs;
+    return Math.round(seconds/60);
 }
 
 export default function Posts({ allPosts }: PostsProps) {
@@ -138,6 +152,9 @@ export default function Posts({ allPosts }: PostsProps) {
                                             <a>
                                                 <div className={styles.subTitle}>
                                                     <time>{post.updatedAt}</time>
+                                                    <div>
+                                                        <Image src="/images/icons/book.png" width={20} height={20} alt="livro aberto" />
+                                                         <span>{post.timeOfRead} min</span></div>
                                                     <Tag value={post.tag}></Tag>
                                                 </div>
                                                 <strong>{post.title}</strong>

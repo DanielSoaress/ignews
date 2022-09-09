@@ -100,8 +100,18 @@
 
         .subTitle {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+
+            div:first-of-type {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    margin-left: 0.5rem;
+                }
+            }
         }
 
         time {

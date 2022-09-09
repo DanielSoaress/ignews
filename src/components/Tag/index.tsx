@@ -31,6 +31,6 @@ export function Tag(props: TagProps) {
         >
             <span>{ props.value}</span>
         </div>
-        : <div className={styles.tagContainer}></div>
+        : <></>
     )
 }
