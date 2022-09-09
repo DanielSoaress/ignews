@@ -174,10 +174,10 @@ export const getStaticProps: GetStaticProps = async () => {
     const response = await prismic.query<any>(
         [Prismic.predicates.at('document.type', 'template-post')],
         {
-            fetch: ['template-post.title', 'template-post.content', 'template-post.image',  'template-post.tag'],
+            fetch: ['template-post.title', 'template-post.content', 'template-post.image',  'template-post.tags'],
             pageSize: 4,
             page: 1,
-            orderings: '[document.first_publication_date desc]'
+            orderings: '[document.last_publication_date desc]'
         },
     )
 
