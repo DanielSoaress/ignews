@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
 import styles from './home.module.scss';
-import Image from 'next/image';
 
 export default function Home({  }) {
   return (

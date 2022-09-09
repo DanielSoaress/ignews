@@ -1,16 +1,14 @@
 import { GetStaticProps } from 'next';
-import Head from 'next/head';
 import { getPrismicClient, listPostPrismic } from '../../services/prismic';
-import { Search } from '../../components/Search';
-import { ButtonScrollTop } from '../../components/ButtonScrollTop';
-import { Tag } from '../../components/Tag';
+import { Search, ButtonScrollTop, Tag } from '../../components';
 import styles from './styles.module.scss';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
-import Link from 'next/link';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Post = {
     slug: string;
