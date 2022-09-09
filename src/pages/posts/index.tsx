@@ -9,6 +9,7 @@ import { RichText } from 'prismic-dom';
 import Link from 'next/link';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Image from 'next/image';
 
 type Post = {
     slug: string;
@@ -106,7 +107,7 @@ export default function Posts({ allPosts }: PostsProps) {
             </Head>
             <main className={styles.container}>
                 <ButtonScrollTop
-                    show={posts.length > 4}/>
+                    show={posts.length > 4} />
                 <div className={styles.posts}>
                     <Search
                         handleSearch={searchPosts}
@@ -121,7 +122,15 @@ export default function Posts({ allPosts }: PostsProps) {
                             {
                                 posts.map(post => (
                                     <div key={post.slug} className={styles.postContainer}>
-                                        <img src={post.image} alt={post.image} />
+                                        <div className={styles.imgContainer}>
+                                            <Image
+                                                src={post.image}
+                                                alt={post.title}
+                                                layout="fill"
+                                                objectFit="cover"
+                                                >
+                                            </Image>
+                                        </div>
                                         <Link href={`/posts/${post.slug}`} key={post.slug}>
                                             <a>
                                                 <time>{post.updatedAt}</time>
