@@ -25,16 +25,39 @@ interface PostsProps {
     allPosts: Post[];
 }
 
+const pageSize = 4;
+const fetch = 'template-post.title,template-post.content,template-post.image,template-post.tag';
+const q = '[at(document.type,"template-post")]';
+
+const handlerPosts = (posts) => {
+    let countPost = 0;
+    return posts.map(post => {
+        countPost++;
+        const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
+        const isMultipleFour = countPost % 4 === 0;
+        const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
+        return {
+            slug: post.uid,
+            title: RichText.asText(post.data.title),
+            excerpt: excerpt.length > 200 ? `${previewText}...` : '',
+            image: post.data.image.url ?? '',
+            tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
+            updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
+                {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                })
+        }
+    })
+}
+
 export default function Posts({ allPosts }: PostsProps) {
     const [currentPage, setCurrentPage] = useState(2);
     const [posts, setPosts] = useState(allPosts);
     const [search, setSearch] = useState('');
     const [hasMore, setHasMore] = useState(true);
     const [loadingSearch, setLoadingSearch] = useState(false);
-
-    const pageSize = 4;
-    const fetch = 'template-post.title,template-post.content,template-post.image,template-post.tag';
-    const q = '[at(document.type,"template-post")]';
 
     const getMorePost = async () => {
         if (loadingSearch) return;
@@ -51,29 +74,6 @@ export default function Posts({ allPosts }: PostsProps) {
             setPosts([...posts, ...postsResponse]);
         }
     };
-
-    const handlerPosts = (posts) => {
-        let countPost = 0;
-        return posts.map(post => {
-            countPost++;
-            const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
-            const isMultipleFour = countPost % 4 === 0;
-            const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
-            return {
-                slug: post.uid,
-                title: RichText.asText(post.data.title),
-                excerpt: excerpt.length > 200 ? `${previewText}...` : '',
-                image: post.data.image.url ?? '',
-                tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
-                updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
-                    {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                    })
-            }
-        })
-    }
 
     const searchPosts = async (searchText) => {
         setLoadingSearch(true);
@@ -174,33 +174,13 @@ export const getStaticProps: GetStaticProps = async () => {
     const response = await prismic.query<any>(
         [Prismic.predicates.at('document.type', 'template-post')],
         {
-            fetch: ['template-post.title', 'template-post.content', 'template-post.image',  'template-post.tags'],
-            pageSize: 4,
             page: 1,
+            fetch: fetch.split(','),
+            pageSize,
             orderings: '[document.last_publication_date desc]'
         },
     )
-
-    let countPost = 0;
-    const allPosts = response.results.map(post => {
-        countPost++;
-        const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
-        const isMultipleFour = countPost % 4 === 0;
-        const previewText = isMultipleFour ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
-        return {
-            slug: post.uid,
-            title: RichText.asText(post.data.title),
-            excerpt: excerpt.length > 200 ? `${previewText}...` : '',
-            image: post.data.image.url ?? '',
-            tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
-            updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
-                {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                })
-        }
-    })
+    const allPosts = handlerPosts(response.results);
 
     return {
         props: {
