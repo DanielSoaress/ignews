@@ -5,6 +5,21 @@
     min-height: calc(100vh - 6.5rem);
 }
 
+.imgContainer {
+    object-fit: cover;
+    width: 50%;
+    height: 250px;
+    display: block;
+    padding-right: 1rem;
+
+    span {
+        position: relative!important;
+        width: 100%!important;
+        height: 100%!important;
+        display: block!important;
+    }
+}
+
 .notData {
 
     padding-bottom: 8px;
@@ -44,7 +59,7 @@
     &:nth-child(even) {
         flex-direction: row-reverse;
 
-        img {
+        .imgContainer {
             padding-right: 0rem;
             padding-left: 1rem;
         }
@@ -63,8 +78,7 @@
         padding-bottom: 1rem;
         margin-top: 2rem;
 
-        a,
-        img {
+        a, .imgContainer {
             width: 100%;
             padding: 0;
         }
@@ -73,14 +87,6 @@
             margin-top: 2rem;
             text-align: justify;
         }
-    }
-
-    img {
-        display: block;
-        width: 50%;
-        height: 250px;
-        object-fit: cover;
-        padding-right: 1rem;
     }
 }
 
@@ -92,9 +98,25 @@
         display: block;
         width: 50%;
 
+        .subTitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            div:first-of-type {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+
         time {
             font-size: 0.9rem;
-            display: flex;
+            display: inline;
             align-items: center;
             color: var(--white);
         }

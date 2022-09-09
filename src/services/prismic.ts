@@ -39,7 +39,7 @@ export async function listPostPrismic(data?: Params) {
         const fetchParams = encodeURIComponent(`fetch=[${data.fetch}]`);
         const pageSize = `pageSize=${data.pageSize}`;
         const page = `page=${data.currentPage}`;
-        const order = `orderings=${encodeURIComponent('[document.first_publication_date desc]')}`;
+        const order = `orderings=${encodeURIComponent('[document.last_publication_date desc]')}`;
 
         const resp = await getRef();
         if(!resp) return false;

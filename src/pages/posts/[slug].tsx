@@ -1,9 +1,7 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { RichText } from "prismic-dom";
-
 import { getPrismicClient } from "../../services/prismic";
-
 import styles from './post.module.scss';
 
 interface PostProps {
@@ -27,7 +25,7 @@ export default function Post ({ post }: PostProps) {
                 <article className={styles.post}>
                     <h1>{post.title}</h1>
                     <time>{post.updatedAt}</time>
-                    <img src={post.image} alt="turururu" />
+                    <img src={post.image} alt={post.title} />
                     <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.content }} />
                 </article>
             </main>
