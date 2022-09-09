@@ -98,9 +98,15 @@
         display: block;
         width: 50%;
 
+        .subTitle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         time {
             font-size: 0.9rem;
-            display: flex;
+            display: inline;
             align-items: center;
             color: var(--white);
         }

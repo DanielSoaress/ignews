@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { getPrismicClient, listPostPrismic } from '../../services/prismic';
 import { Search } from '../../components/Search';
 import { ButtonScrollTop } from '../../components/ButtonScrollTop';
+import { Tag } from '../../components/Tag';
 import styles from './styles.module.scss';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
@@ -15,6 +16,7 @@ type Post = {
     slug: string;
     title: string;
     excerpt: string;
+    tag: string;
     image: string;
     updatedAt: string;
 }
@@ -31,7 +33,7 @@ export default function Posts({ allPosts }: PostsProps) {
     const [loadingSearch, setLoadingSearch] = useState(false);
 
     const pageSize = 4;
-    const fetch = 'template-post.title,template-post.content,template-post.image';
+    const fetch = 'template-post.title,template-post.content,template-post.image,template-post.tag';
     const q = '[at(document.type,"template-post")]';
 
     const getMorePost = async () => {
@@ -62,6 +64,7 @@ export default function Posts({ allPosts }: PostsProps) {
                 title: RichText.asText(post.data.title),
                 excerpt: excerpt.length > 200 ? `${previewText}...` : '',
                 image: post.data.image.url ?? '',
+                tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
                 updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
                     {
                         day: '2-digit',
@@ -133,7 +136,10 @@ export default function Posts({ allPosts }: PostsProps) {
                                         </div>
                                         <Link href={`/posts/${post.slug}`} key={post.slug}>
                                             <a>
-                                                <time>{post.updatedAt}</time>
+                                                <div className={styles.subTitle}>
+                                                    <time>{post.updatedAt}</time>
+                                                    <Tag value={post.tag}></Tag>
+                                                </div>
                                                 <strong>{post.title}</strong>
                                                 <p>
                                                     {post.excerpt}
@@ -168,7 +174,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const response = await prismic.query<any>(
         [Prismic.predicates.at('document.type', 'template-post')],
         {
-            fetch: ['template-post.title', 'template-post.content', 'template-post.image'],
+            fetch: ['template-post.title', 'template-post.content', 'template-post.image',  'template-post.tag'],
             pageSize: 4,
             page: 1,
             orderings: '[document.first_publication_date desc]'
@@ -186,6 +192,7 @@ export const getStaticProps: GetStaticProps = async () => {
             title: RichText.asText(post.data.title),
             excerpt: excerpt.length > 200 ? `${previewText}...` : '',
             image: post.data.image.url ?? '',
+            tag: post.data?.tags ? RichText.asText(post.data.tags) : '',
             updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-BR',
                 {
                     day: '2-digit',
