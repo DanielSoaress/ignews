@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
 import styles from './home.module.scss';
+import Image from 'next/image';
 
 export default function Home({  }) {
   return (
@@ -18,7 +19,9 @@ export default function Home({  }) {
           </p>
         </section>
 
-        <img src="/images/avatar.png" alt="lostCode coding" />
+        <div className={styles.imgContainer}>
+          <img src="/images/avatar.png" alt="lostCode coding" />
+        </div>
       </main>
     </>
   )
