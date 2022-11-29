@@ -17,7 +17,7 @@ export default function Home({  }) {
             e alguns aprendizados
           </p>
         </section>
-
+        
         <div className={styles.imgContainer}>
           <img src="/images/avatar.png" alt="lostCode coding" />
         </div>
