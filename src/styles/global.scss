@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import './_variables.scss';
+
 * {
     margin: 0;
     padding: 0;
@@ -27,17 +32,30 @@ html {
     scroll-behavior: smooth;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: $breakpoint-xl) {
     html {
         font-size: 93.75%;
     }
 }
 
-@media (max-width: 720px) {
+@media (max-width: $breakpoint-lg) {
     html {
         font-size: 87.5%;
     }
 }
+
+@media (max-width: $breakpoint-md) {
+    html {
+        font-size: 75.5%;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    html {
+        font-size: 67.5%;
+    }
+}
+
 
 body {
     background: var(--pink);

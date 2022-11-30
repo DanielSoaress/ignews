@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .container {
     max-width: 1120px;
     margin: 0 auto;
@@ -17,6 +19,14 @@
         width: 100%!important;
         height: 100%!important;
         display: block!important;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        height: 15rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        width: 100%;
     }
 }
 
@@ -54,6 +64,7 @@
     a {
         padding-right: 0rem;
         padding-left: 1rem;
+        
     }
 
     &:nth-child(even) {
@@ -67,6 +78,17 @@
         a {
             padding-left: 0rem;
             padding-right: 1rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            flex-direction: column;
+            margin-top: 1rem;
+            width: 100%;
+            padding-left: 0px;
+
+            .imgContainer {
+                padding-left: 0rem;
+            }
         }
     }
 
@@ -87,6 +109,10 @@
             margin-top: 2rem;
             text-align: justify;
         }
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        flex-direction: column;
     }
 }
 
@@ -137,6 +163,12 @@
 
         &:hover strong {
             color: var(--yellow-500);
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            margin-top: 1rem;
+            width: 100%;
+            padding-left: 0px;
         }
     }
 }

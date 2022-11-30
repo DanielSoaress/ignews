@@ -1,3 +1,5 @@
+@import '../styles/variables';
+
 .contentContainer {
     max-width: 1120px;
     margin: 0 auto;
@@ -11,6 +13,12 @@
     img {
         animation: upDown 1s infinite alternate;
     }
+
+    @media (max-width: $breakpoint-md) {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 .imgContainer {
@@ -23,6 +31,10 @@
         width: 100%!important;
         height: 100%!important;
         display: block!important;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        display: none;
     }
 }
 
@@ -48,6 +60,12 @@
 
         span {
             color: var(--yellow);
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 4rem;
+            line-height: 4rem;
+            margin-top: 2rem;
         }
     }
 
