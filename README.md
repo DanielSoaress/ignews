@@ -2,7 +2,7 @@
   💻<br>Blog - Lost Code
 </h1>
 
-![Resultado final do projeto](images/preview.png)
+![Resultado final do projeto](public/preview.png)
 
 <h4 align="center"><a href="https://lostcode-blog-ten-liard.vercel.app/">Clique para visitar o projeto</a></h4>
 
