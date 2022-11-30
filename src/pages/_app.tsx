@@ -10,7 +10,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <NextAuthProvider session={pageProps.session}>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        
       </Head>
       <Header />
       <Component {...pageProps} />
