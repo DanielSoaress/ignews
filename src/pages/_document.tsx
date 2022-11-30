@@ -16,7 +16,7 @@ export default class MyDocument extends Document  {
                     <meta charSet='utf-8' />
                     <meta httpEquiv='refresh' content='72000'/>
                     <meta name="copyright" content="Daniel Soares 2022"></meta>
-                    <meta http-equiv="content-language" content="pt-br"></meta>
+                    <meta httpEquiv="content-language" content="pt-br"></meta>
                     <meta name="theme-color" content="#B94899"/>
                     <meta property="og:title" content="Blog // Lost Code"></meta>
                     <meta property="og:description" content="Blog // Lost Code"></meta>
