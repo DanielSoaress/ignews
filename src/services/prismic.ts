@@ -6,12 +6,36 @@ const ACCESS_TOKEN = encodeURIComponent(env.PRISMIC_ACCESS_TOKEN);
 
 type Params = {
     currentPage: number;
-    pageSize: number;
-    fetch: string;
-    q: string;
+    pageSize?: number;
+    fetch?: string;
+    q?: string;
 }
 
-export function getPrismicClient(req?: unknown) {
+export const PARAMS_DAFAULT_PRISMIC = {
+        pageSize:  4,
+        fetch: 'template-post.title,template-post.content,template-post.image,template-post.tags',
+        q: '[at(document.type,"template-post")]',
+        order: 'last_publication_date',
+
+} 
+
+export async function GET_STATIC_POST() {
+    const prismic = GET_PRISMIC_CLIENT();
+
+    const response = await prismic.query<any>(
+        [Prismic.predicates.at('document.type', 'template-post')],
+        {
+            page: 1,
+            fetch: PARAMS_DAFAULT_PRISMIC.fetch.split(','),
+            pageSize: PARAMS_DAFAULT_PRISMIC.pageSize,
+            orderings: `[document.${PARAMS_DAFAULT_PRISMIC.order} desc]`
+        },
+    )
+
+    return response.results
+} 
+
+export function GET_PRISMIC_CLIENT(req?: unknown) {
     return Prismic.client(
         process.env.PRISMIC_END_PONT,
         {
@@ -21,36 +45,85 @@ export function getPrismicClient(req?: unknown) {
     )
 }
 
-async function getRef() {
+async function GET_REF() {
     try {
-        console.log(ACCESS_TOKEN)
-        const responseRef = await fetch(`${PRISMIC_END_PONT}?access_token=${ACCESS_TOKEN}`)
+        const URL_GET_REF = `${PRISMIC_END_PONT}?access_token=${ACCESS_TOKEN}`
+        const response = await fetch(URL_GET_REF)
             .then((response) => response.json());
-        return encodeURIComponent(responseRef.refs[0].ref);
+        return encodeURIComponent(response.refs[0].ref);
     } catch (error) {
-        console.log('getRef', error);
+        console.log('GET_REF', error);
         return false;
     }
 }
 
-export async function listPostPrismic(data?: Params) {
+export async function LIST_POST_PRISMIC(data?: Params) {
+    const ref = await GET_REF();
+    if(!ref) {
+        return false;
+    } 
+
     try {
-        const q = "q=" + encodeURIComponent(`[${data.q}]`);
-        const fetchParams = encodeURIComponent(`fetch=[${data.fetch}]`);
-        const pageSize = `pageSize=${data.pageSize}`;
-        const page = `page=${data.currentPage}`;
-        const order = `orderings=${encodeURIComponent('[document.last_publication_date desc]')}`;
-
-        const resp = await getRef();
-        if(!resp) return false;
-        const ref = encodeURIComponent(resp);
-
-        const url = `${PRISMIC_END_PONT}/documents/search?ref=${ref}&access_token=${ACCESS_TOKEN}&${q}&${fetchParams}&${pageSize}&${page}&${order}`;
+        const params =  {
+            q: getQueryEncoded(PARAMS_DAFAULT_PRISMIC.q),
+            fetch: getFetchEncoded(PARAMS_DAFAULT_PRISMIC.fetch),
+            order: getOrderEncoded(PARAMS_DAFAULT_PRISMIC.order),
+            pageSize: `pageSize=${PARAMS_DAFAULT_PRISMIC.pageSize}`,
+            page: `page=${data.currentPage}`,
+            ref: `ref=${ref}`
+        }
     
-        const response = await fetch(url).then((response) => response.json());
+        const response = await fetch(toMountUrl(params)).then((response) => response.json());
         return response;
     } catch (error) {
-        console.log('listPostPrismic', error);
+        console.log('LIST_POST_PRISMIC', error);
         return false
     }
+}
+
+export async function SEARCH_LIST_POST_PRISMIC(data: Params, search: string) {
+    const ref = await GET_REF();
+    if(!ref) {
+        return false;
+    } 
+
+    try {
+        const params =  {
+            q: getQueryEncoded(PARAMS_DAFAULT_PRISMIC.q, search),
+            fetch: getFetchEncoded(PARAMS_DAFAULT_PRISMIC.fetch),
+            order: getOrderEncoded(PARAMS_DAFAULT_PRISMIC.order),
+            pageSize: `pageSize=${PARAMS_DAFAULT_PRISMIC.pageSize}`,
+            page: `page=${data.currentPage}`,
+            ref: `ref=${ref}`
+        }
+
+        const response = await fetch(toMountUrl(params)).then((response) => response.json());
+        return response;
+    } catch (error) {
+        console.log('SEARCH_LIST_POST_PRISMIC', error);
+        return false
+    }
+}
+
+export const toMountUrl = (params) => {
+    const accessToken = `access_token=${ACCESS_TOKEN}`;
+    const urlBase = `${PRISMIC_END_PONT}/documents/search?${params.ref}&${accessToken}`;
+    const urlParams = `&${params.q}&${params.fetch}&${params.pageSize}&${params.page}&${params.order}`;
+    return urlBase + urlParams;
+}
+
+export const getQueryEncoded = (q: string, search = '') => {
+    if(search) {
+        search = '[fulltext(document,"' + search + '")]';
+    }
+
+    return "q=" + encodeURIComponent(`[${q}${search}]`);
+}
+
+export const getFetchEncoded = (fetch: string) => {
+    return  encodeURIComponent(`fetch=[${fetch}]`);
+}
+
+export const getOrderEncoded = (order = 'last_publication_date') => {
+    return `orderings=${encodeURIComponent(`[document.${order} desc]`)}`;
 }
