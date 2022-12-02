@@ -11,7 +11,7 @@ type Params = {
     q?: string;
 }
 
-const api_id = {
+export const api_id = {
     list_post: 'blog-post',
 };
 
@@ -23,22 +23,6 @@ export const PARAMS_DAFAULT_PRISMIC = {
         q: `[at(document.type,"${api_id.list_post}")]`,
         order: 'last_publication_date',
 
-} 
-
-export async function GET_STATIC_POST() {
-    const prismic = GET_PRISMIC_CLIENT();
-
-    const response = await prismic.query<any>(
-        [Prismic.predicates.at('document.type', api_id.list_post)],
-        {
-            page: 1,
-            fetch: PARAMS_DAFAULT_PRISMIC.fetch.split(','),
-            pageSize: PARAMS_DAFAULT_PRISMIC.pageSize,
-            orderings: `[document.${PARAMS_DAFAULT_PRISMIC.order} desc]`
-        },
-    )
-
-    return response.results
 } 
 
 export function GET_PRISMIC_CLIENT(req?: unknown) {

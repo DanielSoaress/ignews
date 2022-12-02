@@ -1,16 +1,5 @@
 import { RichText } from 'prismic-dom';
 
-export const calcTimeOfRead = (post) => {
-    const num_words = RichText.asText(post.data.content)?.split(' ').length;
-    const num_imgs = 1;
-    let height_imgs = 0;
-    for (let i = 0; i < num_imgs; i++) {
-        height_imgs += (i <= 9) ? 12 - i : 3;
-    }
-    const seconds = (num_words / 265 * 60) + height_imgs;
-    return Math.round(seconds / 60);
-}
-
 export const dateToPtbr = (date) => {
     return new Date(date).toLocaleDateString('pt-BR',
     {
@@ -26,7 +15,7 @@ export const getTag = (post) => {
 
 
 export const getImgUrl = (post) => {
-    return post.data.image.url ?? ''
+    return post.data.image_banner.url ?? ''
 }
 
 export const getTitle = (post) => {

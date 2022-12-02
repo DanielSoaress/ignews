@@ -1,13 +1,16 @@
 import { GetStaticProps } from 'next';
-import { GET_STATIC_POST, LIST_POST_PRISMIC, PARAMS_DAFAULT_PRISMIC, SEARCH_LIST_POST_PRISMIC } from '../../services/prismic';
+import Prismic from '@prismicio/client';
+import { api_id, GET_PRISMIC_CLIENT, LIST_POST_PRISMIC, PARAMS_DAFAULT_PRISMIC, SEARCH_LIST_POST_PRISMIC } from '../../services/prismic';
 import { Search, ButtonScrollTop, Tag } from '../../components';
-import { calcTimeOfRead, dateToPtbr, getImgUrl, getPreviewText, getTag, getTitle, getUid } from '../../helpers/util';
+import { dateToPtbr, getImgUrl, getPreviewText, getTag, getTitle, getUid } from '../../helpers/util';
 import styles from './styles.module.scss';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { RichText } from 'prismic-dom';
+
 
 type Post = {
     slug: string;
@@ -21,6 +24,20 @@ type Post = {
 
 interface PostsProps {
     allPosts: Post[];
+}
+
+export const calcTimeOfRead = (post) => {
+    const introduction = post.data.introduction;
+    const image_banner = post.data.image_banner;
+
+    const num_words = RichText.asText(introduction)?.split(' ').length;
+    const num_imgs = 1;
+    let height_imgs = 0;
+    for (let i = 0; i < num_imgs; i++) {
+        height_imgs += (i <= 9) ? 12 - i : 3;
+    }
+    const seconds = (num_words / 265 * 60) + height_imgs;
+    return Math.round(seconds / 60);
 }
 
 const handlerPosts = (posts) => {
@@ -163,8 +180,19 @@ export default function Posts({ allPosts }: PostsProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const response = GET_STATIC_POST();
-    const allPosts = handlerPosts(response);
+    const prismic = GET_PRISMIC_CLIENT();
+
+    const response = await prismic.query<any>(
+        [Prismic.predicates.at('document.type', api_id.list_post)],
+        {
+            page: 1,
+            fetch: PARAMS_DAFAULT_PRISMIC.fetch.split(','),
+            pageSize: PARAMS_DAFAULT_PRISMIC.pageSize,
+            orderings: `[document.${PARAMS_DAFAULT_PRISMIC.order} desc]`
+        },
+    )
+
+    const allPosts = handlerPosts(response.results);
 
     return {
         props: {
