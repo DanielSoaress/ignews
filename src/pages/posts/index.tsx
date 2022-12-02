@@ -101,7 +101,7 @@ export default function Posts({ allPosts }: PostsProps) {
             </Head>
             <main className={styles.container}>
                 <ButtonScrollTop
-                    show={posts.length > 4} />
+                    show={posts.length > PARAMS_DAFAULT_PRISMIC.pageSize} />
                 <div className={styles.posts}>
                     <Search
                         handleSearch={searchPosts}

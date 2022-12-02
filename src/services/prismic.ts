@@ -11,10 +11,16 @@ type Params = {
     q?: string;
 }
 
+const api_id = {
+    list_post: 'blog-post',
+};
+
+const blog_post = ['title', 'image_banner', 'introduction', 'tag', 'is_published', 'publication_date']
+
 export const PARAMS_DAFAULT_PRISMIC = {
         pageSize:  4,
-        fetch: 'template-post.title,template-post.content,template-post.image,template-post.tags',
-        q: '[at(document.type,"template-post")]',
+        fetch: getFetchByFieldName(blog_post, api_id.list_post),
+        q: `[at(document.type,"${api_id.list_post}")]`,
         order: 'last_publication_date',
 
 } 
@@ -23,7 +29,7 @@ export async function GET_STATIC_POST() {
     const prismic = GET_PRISMIC_CLIENT();
 
     const response = await prismic.query<any>(
-        [Prismic.predicates.at('document.type', 'template-post')],
+        [Prismic.predicates.at('document.type', api_id.list_post)],
         {
             page: 1,
             fetch: PARAMS_DAFAULT_PRISMIC.fetch.split(','),
@@ -126,4 +132,12 @@ export const getFetchEncoded = (fetch: string) => {
 
 export const getOrderEncoded = (order = 'last_publication_date') => {
     return `orderings=${encodeURIComponent(`[document.${order} desc]`)}`;
+}
+
+function getFetchByFieldName(field_name = [], id) {
+    let fetch = '';
+    field_name.forEach(f => {
+        fetch = `${fetch},${id}.${f}`;
+    })
+    return fetch;
 }

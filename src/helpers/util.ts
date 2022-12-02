@@ -42,7 +42,7 @@ export const isToContinue = (text, limit = 200) => {
 }
 
 export const getPreviewText = (post, flag = false) => {
-    const excerpt = post.data.content.find(content => content.type === 'paragraph')?.text ?? '';
+    const excerpt = post.data.introduction.find(content => content.type === 'paragraph')?.text ?? '';
     const toBeContinue = isToContinue(excerpt, 200) ? '...' : '';
 
     const previewText = flag ? excerpt.slice(0, 600) : excerpt.slice(0, 200);
