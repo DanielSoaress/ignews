@@ -30,6 +30,10 @@ export const getFooter = (post) => {
     return RichText.asHtml(post.data.footer) ?? ''
 }
 
+export const getKeywords = (post) => {
+    return post.data.keywords ?? ''
+}
+
 export const getContent = (post) => {
     const content = post.data.content;
     return content.map(el => {

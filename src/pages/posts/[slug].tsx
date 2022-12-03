@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { dateToPtbr, getContent, getFooter, getImgUrl, getIntroduction, getTitle } from "../../helpers/util";
+import { dateToPtbr, getContent, getFooter, getImgUrl, getIntroduction, getKeywords, getPreviewText, getTitle } from "../../helpers/util";
 import { api_id, GET_PRISMIC_CLIENT } from "../../services/prismic";
 import styles from './post.module.scss';
 
@@ -13,6 +13,8 @@ interface PostProps {
         image_banner: string;
         footer: string;
         updatedAt: string;
+        keywords: string;
+        previewText: string;
     }
 }
 
@@ -21,6 +23,9 @@ export default function Post({ post }: PostProps) {
         <>
             <Head>
                 <title>{post.title} | lostCode</title>
+                <meta name='description' content={post.previewText}/>
+                <meta name='keywords' content={post.keywords}/>
+
             </Head>
 
             <main className={styles.container}>
@@ -59,6 +64,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
         image_banner: getImgUrl(response),
         updatedAt: dateToPtbr(response.last_publication_date),
         footer: getFooter(response),
+        keywords: getKeywords(response),
+        previewText: getPreviewText(response),
     }
 
     return {
