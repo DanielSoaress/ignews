@@ -6,6 +6,7 @@ import { Tag } from './Tag';
 import { PostCard } from './PostCard';
 import { NotData } from './NotData';
 import { Loading } from './Loading';
+import { InArticleAds } from './InArticleAds';
 
 export {
     Search,
@@ -15,5 +16,6 @@ export {
     Tag,
     NotData,
     PostCard,
-    Loading
+    Loading,
+    InArticleAds
 }

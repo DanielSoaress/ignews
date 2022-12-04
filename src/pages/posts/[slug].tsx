@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { InArticleAds } from "../../components";
 import { dateToPtbr, getContent, getFooter, getImgUrl, getIntroduction, getKeywords, getPreviewText, getTitle } from "../../helpers/util";
 import { api_id, GET_PRISMIC_CLIENT } from "../../services/prismic";
 import styles from './post.module.scss';
@@ -23,9 +24,8 @@ export default function Post({ post }: PostProps) {
         <>
             <Head>
                 <title>{post.title} | lostCode</title>
-                <meta name='description' content={post.previewText}/>
-                <meta name='keywords' content={post.keywords}/>
-
+                <meta name='description' content={post.previewText} />
+                <meta name='keywords' content={post.keywords} />
             </Head>
 
             <main className={styles.container}>
@@ -39,13 +39,13 @@ export default function Post({ post }: PostProps) {
                         <div key={content.title}>
                             <div>
                                 <img src={content.image_content.url} height={content.image_content.dimensions.height} alt={content.image_content.alt} />
-                                <p className={styles.caption}>{ content.image_content.alt }</p>
+                                <p className={styles.caption}>{content.image_content.alt}</p>
                             </div>
                             {content.title && <h4>{content.title}</h4>}
                             <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: content.paragraph }} />
                         </div>
                     ))}
-
+                    <InArticleAds />
                     <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.footer }} />
                 </article>
             </main>
