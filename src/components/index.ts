@@ -5,6 +5,7 @@ import { Header } from './Header';
 import { Tag } from './Tag';
 import { PostCard } from './PostCard';
 import { NotData } from './NotData';
+import { Loading } from './Loading';
 
 export {
     Search,
@@ -13,5 +14,6 @@ export {
     Header,
     Tag,
     NotData,
-    PostCard
+    PostCard,
+    Loading
 }

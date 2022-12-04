@@ -19,7 +19,7 @@ type PostCardProps = {
 export function PostCard({ content }: PostCardProps) {
     const { slug, title, excerpt, tag, image, timeOfRead, updatedAt } = content;
     return (
-        <div key={slug} className={styles.postContainer}>
+        <div className={styles.postContainer}>
             <div className={styles.imgContainer}>
                 <Image
                     src={image}

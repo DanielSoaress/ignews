@@ -1,17 +1,14 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
 import { api_id, GET_PRISMIC_CLIENT, LIST_POST_PRISMIC, PARAMS_DAFAULT_PRISMIC, SEARCH_LIST_POST_PRISMIC } from '../../services/prismic';
-import { Search, ButtonScrollTop, Tag, NotData } from '../../components';
+import { Search, ButtonScrollTop, Tag, NotData, Loading } from '../../components';
 import { dateToPtbr, getImgUrl, getPreviewText, getTag, getTitle, getUid } from '../../helpers/util';
 import styles from './styles.module.scss';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
 import { RichText } from 'prismic-dom';
 import { PostCard } from '../../components/PostCard';
-
 
 type Post = {
     slug: string;
@@ -124,7 +121,8 @@ export default function Posts({ allPosts }: PostsProps) {
             </Head>
             <main className={styles.container}>
                 <ButtonScrollTop
-                    show={posts.length > PARAMS_DAFAULT_PRISMIC.pageSize} />
+                    show={posts.length > PARAMS_DAFAULT_PRISMIC.pageSize}
+                />
                 <div className={styles.posts}>
                     <Search
                         handleSearch={searchPosts}
@@ -134,22 +132,19 @@ export default function Posts({ allPosts }: PostsProps) {
                             dataLength={posts.length}
                             next={getMorePost}
                             hasMore={hasMore}
-                            loader={<div className={styles.loadingContainer}><div className={styles.ldsEllipsis}><div></div><div></div><div></div><div></div></div></div>}
+                            loader={<Loading/>}
                         >
                             {
                                 posts.map(post => (
                                     <PostCard
+                                        key={post.slug}
                                         content={post}
                                     />
                                 ))
                             }
                         </InfiniteScroll>
                         :
-                        <div className={styles.loadingContainer}>
-                            <div className={styles.ldsEllipsis}>
-                                <div></div><div></div><div></div><div></div>
-                            </div>
-                        </div>
+                        <Loading/>
                     }
 
                     {
