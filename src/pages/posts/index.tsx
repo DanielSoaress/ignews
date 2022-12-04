@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
 import { api_id, GET_PRISMIC_CLIENT, LIST_POST_PRISMIC, PARAMS_DAFAULT_PRISMIC, SEARCH_LIST_POST_PRISMIC } from '../../services/prismic';
-import { Search, ButtonScrollTop, Tag, NotData, Loading } from '../../components';
+import { Search, ButtonScrollTop, NotData, Loading } from '../../components';
 import { dateToPtbr, getImgUrl, getPreviewText, getTag, getTitle, getUid } from '../../helpers/util';
 import styles from './styles.module.scss';
 import { useState } from 'react';

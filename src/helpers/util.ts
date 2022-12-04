@@ -38,8 +38,8 @@ export const getContent = (post) => {
     return content.map(el => {
         return {
             ...el,
-            paragraph: RichText.asHtml(el.paragraph),
-            title: RichText.asText(el.title),
+            paragraph: RichText.asHtml(el.paragraph) ?? '',
+            title: RichText.asText(el.title) ?? '',
         }
     });
 }

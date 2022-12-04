@@ -32,12 +32,16 @@ export default function Post({ post }: PostProps) {
                 <article className={styles.post}>
                     <h1>{post.title}</h1>
                     <time>{post.updatedAt}</time>
-                    <img src={post.image_banner} alt={post.title} />
+                    <img className={post.image_banner} src={post.image_banner} alt={post.title} />
                     <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.introduction }} />
 
                     {post.content.map(content => (
-                        <div key={post.title}>
-                            <h3>{post.title}</h3>
+                        <div key={content.title}>
+                            <div>
+                                <img src={content.image_content.url} height={content.image_content.dimensions.height} alt={content.image_content.alt} />
+                                <p className={styles.caption}>{ content.image_content.alt }</p>
+                            </div>
+                            {content.title && <h4>{content.title}</h4>}
                             <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: content.paragraph }} />
                         </div>
                     ))}
