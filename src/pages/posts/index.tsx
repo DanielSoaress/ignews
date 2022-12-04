@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
 import { api_id, GET_PRISMIC_CLIENT, LIST_POST_PRISMIC, PARAMS_DAFAULT_PRISMIC, SEARCH_LIST_POST_PRISMIC } from '../../services/prismic';
-import { Search, ButtonScrollTop, Tag } from '../../components';
+import { Search, ButtonScrollTop, Tag, NotData } from '../../components';
 import { dateToPtbr, getImgUrl, getPreviewText, getTag, getTitle, getUid } from '../../helpers/util';
 import styles from './styles.module.scss';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RichText } from 'prismic-dom';
+import { PostCard } from '../../components/PostCard';
 
 
 type Post = {
@@ -26,16 +27,28 @@ interface PostsProps {
     allPosts: Post[];
 }
 
-export const calcTimeOfRead = (post) => {
+export const calcTimeOfRead = (post) => { 
     const introduction = post.data.introduction;
-    const image_banner = post.data.image_banner;
+    const image_banner = !!post.data.image_banner ? 1 : 0;
 
-    const num_words = RichText.asText(introduction)?.split(' ').length;
-    const num_imgs = 1;
+    let num_words = RichText.asText(introduction)?.split(' ').length;
+    let num_imgs = image_banner;
+    
+
+    post.data.content.map(el => {
+        let img = !!el.image_content ? 1 : 0;
+        let title =  RichText.asText(el.title).length;
+        let content = RichText.asText(el.paragraph).length;
+
+        num_imgs += img;
+        num_words += title + content;
+    })
+
     let height_imgs = 0;
     for (let i = 0; i < num_imgs; i++) {
         height_imgs += (i <= 9) ? 12 - i : 3;
     }
+
     const seconds = (num_words / 265 * 60) + height_imgs;
     return Math.round(seconds / 60);
 }
@@ -100,14 +113,7 @@ export default function Posts({ allPosts }: PostsProps) {
 
     const renderNotData = () => {
         if (!loadingSearch && !posts.length && !hasMore) {
-            return (
-                <>
-                    <div className={styles.notData}>
-                        <img src="/images/icons/search.svg" alt="search" />
-                        <p >Sua pesquisa não encontrou nenhum documento correspondente.</p>
-                    </div>
-                </>
-            )
+            return <NotData/>
         }
     }
 
@@ -132,32 +138,9 @@ export default function Posts({ allPosts }: PostsProps) {
                         >
                             {
                                 posts.map(post => (
-                                    <div key={post.slug} className={styles.postContainer}>
-                                        <div className={styles.imgContainer}>
-                                            <Image
-                                                src={post.image}
-                                                alt={post.title}
-                                                layout="fill"
-                                                objectFit="cover"
-                                            >
-                                            </Image>
-                                        </div>
-                                        <Link href={`/posts/${post.slug}`} key={post.slug}>
-                                            <a>
-                                                <div className={styles.subTitle}>
-                                                    <time>{post.updatedAt}</time>
-                                                    <div>
-                                                        <Image src="/images/icons/book.png" width={20} height={20} alt="livro aberto" />
-                                                        <span>{post.timeOfRead} min</span></div>
-                                                    <Tag value={post.tag}></Tag>
-                                                </div>
-                                                <strong>{post.title}</strong>
-                                                <p>
-                                                    {post.excerpt}
-                                                </p>
-                                            </a>
-                                        </Link>
-                                    </div>
+                                    <PostCard
+                                        content={post}
+                                    />
                                 ))
                             }
                         </InfiniteScroll>

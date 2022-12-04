@@ -10,28 +10,27 @@ export const dateToPtbr = (date) => {
 }
 
 export const getTag = (post) => {
-    return post.data?.tags ? RichText.asText(post.data.tags) : ''
+    return post.data?.tag ? RichText.asText(post.data.tag) : '';
 }
-
-
+  
 export const getImgUrl = (post) => {
-    return post.data.image_banner.url ?? ''
+    return post.data.image_banner.url ?? '';
 }
 
 export const getTitle = (post) => {
-    return RichText.asText(post.data.title)
+    return RichText.asText(post.data.title);
 }
 
 export const getIntroduction = (post) => {
-    return RichText.asHtml(post.data.introduction) ?? ''
+    return RichText.asHtml(post.data.introduction) ?? '';
 }
 
 export const getFooter = (post) => {
-    return RichText.asHtml(post.data.footer) ?? ''
+    return RichText.asHtml(post.data.footer) ?? '';
 }
 
 export const getKeywords = (post) => {
-    return post.data.keywords ?? ''
+    return post.data.keywords ?? '';
 }
 
 export const getContent = (post) => {
@@ -46,7 +45,7 @@ export const getContent = (post) => {
 }
 
 export const getUid = (post) => {
-    return post.uid ?? ''
+    return post.uid ?? '';
 }
 
 export const isToContinue = (text, limit = 200) => {

@@ -15,7 +15,7 @@ export const api_id = {
     list_post: 'blog-post',
 };
 
-const blog_post = ['title', 'image_banner', 'introduction', 'tag', 'is_published', 'publication_date']
+const blog_post = ['title', 'content', 'image_banner', 'introduction', 'tag', 'is_published', 'publication_date']
 
 export const PARAMS_DAFAULT_PRISMIC = {
         pageSize:  4,
