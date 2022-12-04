@@ -1,0 +1,89 @@
+@import '../../styles/variables';
+
+.postContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    margin-top: 1rem;
+    padding-top: 1rem;
+
+    @media (max-width: $breakpoint-sm) {
+        flex-direction: column;
+    }
+}
+
+.linkContent {
+    display: block;
+    width: 50%;
+
+    .subTitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        div:first-of-type {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+
+    time {
+        font-size: 0.9rem;
+        display: inline;
+        align-items: center;
+        color: var(--white);
+    }
+
+    strong {
+        display: block;
+        font-size: 1.4rem;
+        margin-top: 0.5rem;
+        line-height: 2rem;
+        transition: color 0.4s;
+    }
+
+    p {
+        color: var(--white);
+        margin-top: 0.5rem;
+        line-height: 1.625rem;
+    }
+
+    &:hover strong {
+        color: var(--yellow-500);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        margin-top: 1rem;
+        width: 100%;
+        padding-left: 0px;
+    }
+}
+
+.imgContainer {
+    object-fit: cover;
+    width: 50%;
+    height: 250px;
+    display: block;
+    padding-right: 1rem;
+
+    span {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        height: 15rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        width: 100%;
+    }
+}

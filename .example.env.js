@@ -1,0 +1,4 @@
+export const env = {
+    PRISMIC_END_PONT: 'https://xxxxxxxxxx.prismic.io/api/v2',
+    PRISMIC_ACCESS_TOKEN: 'MC5ZxE4xS3hcQUFDxUFxd2d4.7x-977-9bO-_vXxqfe-_va-_va-_vTaFAe-_ve-_ve-_ve-_vRnav2139Jy4iSe-_vTFG77-9cnNM77-9',
+}
