@@ -22,9 +22,10 @@ Para o desenvolvimento deste site utilizei as seguintes tecnologias:
 
 - HTML;
 - Sass;
-- JavaScript;
+- Typescript;
 - React;
 - Next;
+- Prismic CMS
 
 ---
 
