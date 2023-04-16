@@ -8,47 +8,36 @@
 
 ## 📚 Seções
 
-O site é composto por alguma páginas principais:
+O site é composto por três páginas:
 
-- **Home:** Nele temos o feed princial do usuário;
-- **Search:** Nessa página podemos buscar por conteúdo e pessoas;
-- **Gallery:** Temos as galerias do usuário sendo pública ou não;
-- **Communities:** Temos as comunidades de filmes, séries e músicas;
+- **Home:** Nele temos uma breve apresentação;
+- **List Post:** Nessa página tenho uma lista de posts com seus respectivos resumos;
+- **Post:** Temos todo o conteúdo do post;
 
 ---
 
 ## 💼 Tecnologias utilizadas
 
-Para o desenvolvimento desta aplicação é utilizado as seguintes tecnologias:
+Para o desenvolvimento deste site utilizei as seguintes tecnologias:
 
 - HTML;
 - Sass;
-- Vue 3;
-- Vue Router;
-- Vuex;
-- Node.js;
-- Mongoose;
-- MongoDB;
+- Typescript;
+- React;
+- Next;
+- Prismic CMS
 
 ---
 
-<h2>Contribuidores</h2>
+<h2>Autor</h2>
 
 <table>
   <tr>
     <td align="center">
       <a href="https://github.com/daniel-soaress">
-        <img src="https://avatars.githubusercontent.com/u/27651005?v=4" width="100px;" alt="Foto de Daniel Soares no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/27651005?v=4" width="100px;" alt="Foto do Daniel Soares no GitHub"/><br>
         <sub>
           <b>Daniel Soares</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/riberotais">
-        <img src="https://avatars.githubusercontent.com/u/22006721?v=4" width="100px;" alt="Foto de Taís Ribeiro no GitHub"/><br>
-        <sub>
-          <b>Taís Ribeiro</b>
         </sub>
       </a>
     </td>
