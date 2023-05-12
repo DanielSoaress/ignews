@@ -4,14 +4,15 @@
 
 ![Resultado final do projeto](public/preview.png)
 
-<h4 align="center"><a href="https://react-flow-app-green.vercel.app/">Clique para visitar o projeto</a></h4>
+<h4 align="center"><a href="https://lostcode-blog-ten-liard.vercel.app/">Clique para visitar o projeto</a></h4>
 
-## 📚 Descrição
+## 📚 Seções
 
-Realizar uma POC com o framework React Flow com os seguintes objetivos:
+O site é composto por três páginas distintas:
 
-* Confirmar o modo como trabalhar com esse framework;
-* Definir como encapsular este proojeto em outro projeto;
+- **Home:** Nesta página, é apresentada uma breve introdução ou resumo do conteúdo do site.
+- **List Post:** Nessa página, é exibida uma lista de posts, cada um acompanhado por um resumo que descreve seu conteúdo.
+- **Post:** Na página de post, todo o conteúdo do post em si é disponibilizado, incluindo informações detalhadas, texto completo e possíveis elementos multimídia.
 
 ---
 
@@ -20,11 +21,11 @@ Realizar uma POC com o framework React Flow com os seguintes objetivos:
 Para o desenvolvimento deste site utilizei as seguintes tecnologias:
 
 - HTML;
-- CSS;
+- Sass;
 - Typescript;
 - React;
-- React Flow;
-- Tailwind;
+- Next;
+- Prismic CMS
 
 ---
 
